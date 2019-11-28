@@ -773,7 +773,7 @@ func (h *Handler) PluginLoad(pluginPath string) error {
 	//ch := make(chan string)
 	//h.chMap[pluginPath] = ch
 	c.wg.Add(1)
-	c.loadPreSchedulerPlug(pluginPath)
+	go c.loadPreSchedulerPlug(pluginPath)
 	return nil
 }
 
