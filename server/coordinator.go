@@ -295,6 +295,23 @@ func (c *coordinator) readUserConfig(pluginPath, configPath string, ch chan stri
 	}
 }
 
+func (c *coordinator) loadPreSchedulerPlug(pluginPath string) {
+	defer logutil.LogPanic()
+	defer c.wg.Done()
+	//get func from plugin
+	//func : NewUserConfig()
+	f1, err := schedule.GetFunction(pluginPath, "Mytest")
+	if err != nil {
+		log.Error("GetFunction err", zap.Error(err))
+		return
+	}
+
+	Mytest := f1.(func())
+	Mytest()
+	
+}
+
+
 func (c *coordinator) stop() {
 	c.cancel()
 }

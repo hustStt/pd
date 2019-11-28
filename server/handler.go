@@ -763,26 +763,26 @@ func (h *Handler) GetEmptyRegion() ([]*core.RegionInfo, error) {
 }
 
 // PluginLoad loads the plugin referenced by the pluginPath
-func (h *Handler) PluginLoad(pluginPath, configPath string) error {
+func (h *Handler) PluginLoad(pluginPath string) error {
 	fmt.Println(pluginPath)
-	fmt.Println(configPath)
+	//fmt.Println(configPath)
 	c, err := h.getCoordinator()
 	if err != nil {
 		return err
 	}
-	ch := make(chan string)
-	h.chMap[pluginPath] = ch
+	//ch := make(chan string)
+	//h.chMap[pluginPath] = ch
 	c.wg.Add(1)
-	go c.readUserConfig(pluginPath, configPath, ch)
+	c.loadPreSchedulerPlug(pluginPath)
 	return nil
 }
 
 // PluginUpdate update the plugin referenced by the pluginPath
-func (h *Handler) PluginUpdate(pluginPath, configPath string) error {
+func (h *Handler) PluginUpdate(pluginPath string) error {
 	fmt.Println(pluginPath)
-	fmt.Println(configPath)
-	ch := h.chMap[pluginPath]
-	ch <- configPath
+	//fmt.Println(configPath)
+	//ch := h.chMap[pluginPath]
+	//ch <- configPath
 	return nil
 }
 

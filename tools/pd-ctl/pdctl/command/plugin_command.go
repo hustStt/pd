@@ -1,3 +1,4 @@
+/*
 package command
 
 import (
@@ -87,3 +88,5 @@ func unloadPluginCommandFunc(cmd *cobra.Command, args []string) {
 	}
 	postJSON(cmd, unloadPrefix, input)
 }
+
+*/

@@ -64,6 +64,7 @@ func Start(args []string) {
 		command.NewHealthCommand(),
 		command.NewLogCommand(),
 		command.NewPluginCommand(),
+		command.NewNPluginCommand(),
 	)
 
 	rootCmd.SetArgs(args)
