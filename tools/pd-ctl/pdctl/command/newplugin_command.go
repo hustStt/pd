@@ -54,7 +54,7 @@ func NewUnloadNPluginCommand() *cobra.Command {
 }
 
 func loadNewPluginCommandFunc(cmd *cobra.Command, args []string) {
-	if len(args) != 2 {
+	if len(args) != 1 {
 		cmd.Println(cmd.UsageString())
 		return
 	}
@@ -65,7 +65,7 @@ func loadNewPluginCommandFunc(cmd *cobra.Command, args []string) {
 }
 
 func updateNewPluginCommandFunc(cmd *cobra.Command, args []string) {
-	if len(args) != 2 {
+	if len(args) != 1 {
 		cmd.Println(cmd.UsageString())
 		return
 	}

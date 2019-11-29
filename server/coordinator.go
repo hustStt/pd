@@ -300,12 +300,12 @@ func (c *coordinator) loadPreSchedulerPlug(pluginPath string) {
 	defer c.wg.Done()
 	//get func from plugin
 	//func : NewUserConfig()
+	fmt.Println("loadPreSchedulerPlug")
 	f1, err := schedule.GetFunction(pluginPath, "Mytest")
 	if err != nil {
 		log.Error("GetFunction err", zap.Error(err))
 		return
 	}
-
 	Mytest := f1.(func())
 	Mytest()
 	
