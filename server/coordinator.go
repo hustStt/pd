@@ -301,13 +301,13 @@ func (c *coordinator) loadPreSchedulerPlug(pluginPath string) {
 	//get func from plugin
 	//func : NewUserConfig()
 	fmt.Println("loadPreSchedulerPlug")
-	f1, err := schedule.GetFunction(pluginPath, "Mytest")
+	f1, err := schedule.GetFunction(pluginPath, "GetRegions")
 	if err != nil {
 		log.Error("GetFunction err", zap.Error(err))
 		return
 	}
-	Mytest := f1.(func())
-	Mytest()
+	Mytest := f1.(func(*RaftCluster))
+	Mytest(c.cluster)
 	
 }
 
