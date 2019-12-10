@@ -508,9 +508,9 @@ func (r *RegionsInfo) SetRegion(region *RegionInfo) []*metapb.Region {
 	rwBytesTotalarr := GetSplitRegionRwByte()
 	overlaps := r.tree.getOverlaps(region.meta)
 	//如果产生了分裂
-	if rwb,ok := rwBytesTotalarr[region.GetId()];ok {
+	if rwb,ok := rwBytesTotalarr[region.GetID()];ok {
 		region.rwBytesTotal =  rwb //+ (region.readBytes + region.writtenBytes)/region.approximateSize
-		delete(rwBytesTotalarr,region.GetId())//delete
+		delete(rwBytesTotalarr,region.GetID())//delete
 	} else {//如果产生了合并 或者 没有分裂或者合并
 		var sum uint64
 		sum = 0
@@ -522,7 +522,7 @@ func (r *RegionsInfo) SetRegion(region *RegionInfo) []*metapb.Region {
 	}
 	ok := false
 	for _,reg := range overlaps {
-		regInfo := r.regions.Get(reg.GetID())
+		regInfo := r.regions.Get(reg.GetId())
 		if time.Unix(int64(regInfo.interval.StartTimestamp),0).Hour() < time.Unix(int64(region.interval.StartTimestamp),0).Hour() {
 			ok = true
 		}
