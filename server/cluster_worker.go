@@ -46,7 +46,7 @@ func (c *RaftCluster) HandleRegionHeartbeat(region *core.RegionInfo) error {
 }
 
 func (c *RaftCluster) handleAskSplit(request *pdpb.AskSplitRequest) (*pdpb.AskSplitResponse, error) {
-	rwBytesTotalarr := GetSplitRegionRwByte()
+	rwBytesTotalarr := core.GetSplitRegionRwByte()
 	reqRegion := request.GetRegion()
 	err := c.validRequestRegion(reqRegion)
 	if err != nil {
@@ -59,7 +59,7 @@ func (c *RaftCluster) handleAskSplit(request *pdpb.AskSplitRequest) (*pdpb.AskSp
 	}
 
 	reqRegionInfo := c.GetRegion(reqRegion.GetId())
-	rwBytesTotalarr[newRegionID] = reqRegionInfo.rwBytesTotal
+	rwBytesTotalarr[newRegionID] = reqRegionInfo.GetRwBytesTotal()
 
 	peerIDs := make([]uint64, len(request.Region.Peers))
 	for i := 0; i < len(peerIDs); i++ {
@@ -99,7 +99,7 @@ func (c *RaftCluster) validRequestRegion(reqRegion *metapb.Region) error {
 }
 
 func (c *RaftCluster) handleAskBatchSplit(request *pdpb.AskBatchSplitRequest) (*pdpb.AskBatchSplitResponse, error) {
-	rwBytesTotalarr := GetSplitRegionRwByte()
+	rwBytesTotalarr := core.GetSplitRegionRwByte()
 	reqRegion := request.GetRegion()
 	reqRegionInfo := c.GetRegion(reqRegion.GetId())
 	splitCount := request.GetSplitCount()
@@ -119,7 +119,7 @@ func (c *RaftCluster) handleAskBatchSplit(request *pdpb.AskBatchSplitRequest) (*
 			return nil, errSchedulerNotFound
 		}
 		
-		rwBytesTotalarr[newRegionID] = reqRegionInfo.rwBytesTotal
+		rwBytesTotalarr[newRegionID] = reqRegionInfo.GetRwBytesTotal()
 
 		peerIDs := make([]uint64, len(request.Region.Peers))
 		for i := 0; i < len(peerIDs); i++ {

@@ -353,6 +353,10 @@ func (r *RegionInfo) GetBytesWritten() uint64 {
 	return r.writtenBytes
 }
 
+func (r *RegionInfo) GetRwBytesTotal() uint64 {
+	return r.rwBytesTotal
+}
+
 // GetKeysWritten returns the written keys of the region.
 func (r *RegionInfo) GetKeysWritten() uint64 {
 	return r.writtenKeys
