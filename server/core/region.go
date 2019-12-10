@@ -506,16 +506,16 @@ func (r *RegionsInfo) GetRegion(regionID uint64) *RegionInfo {
 func (r *RegionsInfo) SetRegion(region *RegionInfo) []*metapb.Region {
 	//在删除之前更新负载信息
 	rwBytesTotalarr := GetSplitRegionRwByte()
-	overlaps := r.tree.getOverlaps(region)
+	overlaps := r.tree.getOverlaps(region.meta)
 	//如果产生了分裂
-	if rwb,ok := rwBytesTotalarr[region.GetID()];ok {
+	if rwb,ok := rwBytesTotalarr[region.GetId()];ok {
 		region.rwBytesTotal =  rwb //+ (region.readBytes + region.writtenBytes)/region.approximateSize
-		delete(rwBytesTotalarr,region.GetID())//delete
+		delete(rwBytesTotalarr,region.GetId())//delete
 	} else {//如果产生了合并 或者 没有分裂或者合并
 		var sum uint64
 		sum = 0
 		for _,reg := range overlaps {
-			rInfo := r.regions.Get(reg.GetID())
+			rInfo := r.regions.Get(reg.GetId())
 			sum = sum + rInfo.rwBytesTotal
 		}
 		region.rwBytesTotal = sum //+ (region.readBytes + region.writtenBytes)/region.approximateSize
@@ -523,14 +523,14 @@ func (r *RegionsInfo) SetRegion(region *RegionInfo) []*metapb.Region {
 	ok := false
 	for _,reg := range overlaps {
 		regInfo := r.regions.Get(reg.GetID())
-		if time.Unix(regInfo.interval.StartTimestamp,0).Hour() < time.Unix(region.interval.StartTimestamp,0).Hour() {
+		if time.Unix(int64(regInfo.interval.StartTimestamp),0).Hour() < time.Unix(int64(region.interval.StartTimestamp),0).Hour() {
 			ok = true
 		}
 	}
 	if ok {
 		region.rwBytesTotal = region.rwBytesTotal / 2
 	}
-	region.rwBytesTotal = region.rwBytesTotal + (region.readBytes + region.writtenBytes)/region.approximateSize
+	region.rwBytesTotal = region.rwBytesTotal + (region.readBytes + region.writtenBytes) / uint64(region.approximateSize)
 	
 	if origin := r.regions.Get(region.GetID()); origin != nil {
 		r.RemoveRegion(origin)
