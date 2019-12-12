@@ -534,7 +534,11 @@ func (r *RegionsInfo) SetRegion(region *RegionInfo) []*metapb.Region {
 	if ok {
 		region.rwBytesTotal = region.rwBytesTotal / 2
 	}
-	region.rwBytesTotal = region.rwBytesTotal + (region.readBytes + region.writtenBytes) / uint64(region.approximateSize)
+	if region.approximateSize > 0 {
+		region.rwBytesTotal = region.rwBytesTotal + (region.readBytes + region.writtenBytes) / uint64(region.approximateSize)
+	} else {
+		region.rwBytesTotal = 0
+	}
 	
 	if origin := r.regions.Get(region.GetID()); origin != nil {
 		r.RemoveRegion(origin)
