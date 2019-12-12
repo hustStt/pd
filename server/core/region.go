@@ -527,7 +527,7 @@ func (r *RegionsInfo) SetRegion(region *RegionInfo) []*metapb.Region {
 	ok := false
 	for _,reg := range overlaps {
 		regInfo := r.regions.Get(reg.GetId())
-		if time.Unix(int64(regInfo.interval.StartTimestamp),0).Hour() < time.Unix(int64(region.interval.StartTimestamp),0).Hour() {
+		if regInfo != nil && regInfo.interval != nil && (time.Unix(int64(regInfo.interval.StartTimestamp),0).Hour() < time.Unix(int64(region.interval.StartTimestamp),0).Hour()) {
 			ok = true
 		}
 	}
