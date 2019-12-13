@@ -59,7 +59,7 @@ func (c *RaftCluster) handleAskSplit(request *pdpb.AskSplitRequest) (*pdpb.AskSp
 	}
 
 	reqRegionInfo := c.GetRegion(reqRegion.GetId())
-	rwBytesTotalarr[newRegionID] = reqRegionInfo.GetRwBytesTotal()
+	rwBytesTotalarr[newRegionID] = reqRegionInfo.GetRwBytesTotal()/2
 
 	peerIDs := make([]uint64, len(request.Region.Peers))
 	for i := 0; i < len(peerIDs); i++ {
